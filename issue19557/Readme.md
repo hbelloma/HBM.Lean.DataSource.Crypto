@@ -19,6 +19,7 @@ qb = QuantBook()
 symbol = qb.add_crypto_future("BTCUSDT", market=Market.BINANCE, fill_forward=False).symbol
 history = qb.history(symbol, datetime(2025,2,1), datetime(2025,5,1), Resolution.MINUTE)
 history.droplevel('symbol').close.plot()
+```
 
 ## Root Cause Analysis
 
