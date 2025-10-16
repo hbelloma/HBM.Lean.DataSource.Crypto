@@ -14,6 +14,8 @@
  *
 */
 
+// FILE MODIFIED BY HBM on 10/10/2025 to get my own data
+
 using System;
 using NodaTime;
 using ProtoBuf;
@@ -29,11 +31,36 @@ namespace QuantConnect.DataSource
     [ProtoContract(SkipConstructor = true)]
     public class MyCustomDataType : BaseData
     {
-        /// <summary>
-        /// Some custom data property
-        /// </summary>
+        ///// <summary> //COMMENTED BY HBM
+        /// Custom properties for data
+        ///// </summary> //COMMENTED BY HBM
         [ProtoMember(2000)]
-        public string SomeCustomProperty { get; set; }
+        //public string SomeCustomProperty { get; set; } //COMMENTED BY HBM
+
+        /// <summary>
+        /// The opening price for the trading period
+        /// </summary>
+        public decimal Open { get; set; } //ADDED BY HBM
+        
+        /// <summary>
+        /// The highest price during the trading period
+        /// </summary>
+        public decimal High { get; set; } //ADDED BY HBM
+        
+        /// <summary>
+        /// The lowest price during the trading period
+        /// </summary>
+        public decimal Low { get; set; }  //ADDED BY HBM
+        
+        /// <summary>
+        /// The closing price for the trading period
+        /// </summary>
+        public decimal Close { get; set; }//ADDED BY HBM
+        
+        /// <summary>
+        /// The trading volume for the period
+        /// </summary>
+        public long Volume { get; set; } //ADDED BY HBM
 
         /// <summary>
         /// Time passed between the date of the data and the time the data became available to us
@@ -52,6 +79,9 @@ namespace QuantConnect.DataSource
         /// <param name="date">Date of this source file</param>
         /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
         /// <returns>String URL of source file.</returns>
+        /// 
+        /// 
+        
         public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, bool isLiveMode)
         {
             return new SubscriptionDataSource(
@@ -73,6 +103,8 @@ namespace QuantConnect.DataSource
         /// <param name="date">Date</param>
         /// <param name="isLiveMode">Is live mode</param>
         /// <returns>New instance</returns>
+        // Reader method: Parse raw data into this object
+
         public override BaseData Reader(SubscriptionDataConfig config, string line, DateTime date, bool isLiveMode)
         {
             var csv = line.Split(',');
@@ -81,8 +113,13 @@ namespace QuantConnect.DataSource
             return new MyCustomDataType
             {
                 Symbol = config.Symbol,
-                SomeCustomProperty = csv[1],
+                //SomeCustomProperty = csv[1], //COMMENTED BY HBM
                 Time = parsedDate - Period,
+                Open = decimal.Parse(csv[1]), //ADDED BY HBM
+                High = decimal.Parse(csv[2]), //ADDED BY HBM
+                Low = decimal.Parse(csv[3]), //ADDED BY HBM
+                Close = decimal.Parse(csv[4]),//ADDED BY HBM
+                Volume = long.Parse(csv[5]), //ADDED BY HBM
             };
         }
 
@@ -97,7 +134,12 @@ namespace QuantConnect.DataSource
                 Symbol = Symbol,
                 Time = Time,
                 EndTime = EndTime,
-                SomeCustomProperty = SomeCustomProperty,
+                //SomeCustomProperty = SomeCustomProperty, //COMMENTED BY HBM
+                Open = Open, //ADDED BY HBM
+                High = High, //ADDED BY HBM
+                Low = Low, //ADDED BY HBM
+                Close = Close, //ADDED BY HBM
+                Volume = Volume //ADDED BY HBM
             };
         }
 
@@ -125,7 +167,8 @@ namespace QuantConnect.DataSource
         /// </summary>
         public override string ToString()
         {
-            return $"{Symbol} - {SomeCustomProperty}";
+            //return $"{Symbol} - {SomeCustomProperty}"; //COMMENTED BY HBM
+            return $"{Symbol} - {Open} - {High} - {Low} - {Close} - {Volume}"; //ADDED BY HBM
         }
 
         /// <summary>
