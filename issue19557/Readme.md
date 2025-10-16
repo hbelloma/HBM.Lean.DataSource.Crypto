@@ -69,4 +69,6 @@ To validate the data gap, we compare the expected number of minute-resolution da
 - **Total:** 79 days  
 - **Total Missing Minutes:**  so missing minutes = 79*1440 = 113,760.
 
+ I suggest to run the Python code  testissue19557.py  in a QuantBook or algorithm in order to reporduce and look the issue cause.
+
 
